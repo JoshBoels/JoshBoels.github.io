@@ -5,12 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Project Website</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Add your CSS styles here */
+        .image-container {
+            display: flex; /* Use flexbox to create a row layout */
+            justify-content: space-between; /* Distribute space evenly between images */
+        }
+
+        .image-container img {
+            width: calc(25% - 10px); /* Adjust the width of each image (25% of the container width with a small gap) */
+            margin-right: 10px; /* Add a small gap between images */
+        }
+    </style>
 </head>
 <body>
     <header>
         <h1>Lab Assignment #1: LEDs and Push Buttons</h1>
         <h3> September 20, 2032</h3>
     </header>
+
+    <section id="tutorial-one">
+        <h2> Settings of all tasks</h2>
+        <div class="image-container">
+            <!-- First Image -->
+            <img src="IMG-8180.PNG" alt="Image 1">
+            
+            <!-- Second Image -->
+            <img src="IMG-8182.jpg" alt="Image 2">
+            
+            <!-- Third Image -->
+            <img src="IMG-8183.PNG" alt="Image 3">
+            
+            <!-- Fourth Image -->
+            <img src="IMG-8184.PNG" alt="Image 4">
+        </div>
+    </section>
 
     <section id="tutorial-one">
         <h2>Tutorial One</h2>
