@@ -56,7 +56,7 @@
     </section>
     
     <section id="Breadboard view">
-        <h2>Circuit Diagram</h2>
+        <h2>Breadboard view</h2>
         <h3>Task 1:</h3>
         <!-- Placeholder for your Task 1 circuit diagram image -->
         <img src="Picture1.png" alt="Task 1 Circuit Diagram">
@@ -69,10 +69,10 @@
         <h2>Circuit Diagram</h2>
         <h3>Task 1:</h3>
         <!-- Placeholder for your Task 1 circuit diagram image -->
-        <img src="Picture3.png" alt="Task 1 Circuit Diagram">
+        <img src="Picture4.png" alt="Task 1 Circuit Diagram">
         <h3>Task 2:</h3>
         <!-- Placeholder for your Task 2 circuit diagram image -->
-        <img src="Picture4.png" alt="Task 2 Circuit Diagram">
+        <img src="Picture3.png" alt="Task 2 Circuit Diagram">
     </section>
 
     <section id="source-code">
@@ -80,13 +80,58 @@
         <h3>Task 1:</h3>
         <pre>
             <code>
-                <!-- Your Task 1 source code here -->
+                from time import sleep_ms
+from machine import Pin
+
+led=Pin(2,Pin.OUT)
+led2=Pin(15, Pin.OUT)
+led3=Pin(0, Pin.OUT)#create LED object from pin2,Set Pin2 to output
+try:
+    while True:
+        led.value(1)        #Set led turn on
+        sleep_ms(1000)
+        led.value(0) 
+        
+        led2.value(1)        #Set led turn off
+        sleep_ms(1000)
+        led2.value(0)
+        
+        led3.value(1)        #Set led turn off
+        sleep_ms(1000)
+        led3.value(0)
+        
+        
+        
+        
+except:
+    pass
+
             </code>
         </pre>
         <h3>Task 2:</h3>
         <pre>
             <code>
-                <!-- Your Task 2 source code here -->
+                import time
+from machine import Pin
+
+led = Pin(2, Pin.OUT)
+button = Pin(12, Pin.IN, Pin.PULL_UP)
+button2 = Pin(13, Pin.IN, Pin.PULL_UP)
+
+ledVal = False
+
+while True:
+    if not button.value():
+        ledVal = False  # Button 1 is pressed, turn off the LED
+    if not button2.value():
+        ledVal = True   # Button 2 is pressed, turn on the LED
+    
+    # Set the LED state based on ledVal
+    if ledVal:
+        led.value(1)
+    else:
+        led.value(0)
+
             </code>
         </pre>
     </section>
