@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Project Website</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Add your CSS styles here */
+        .image-container {
+            display: flex; /* Use flexbox to create a row layout */
+            justify-content: space-between; /* Distribute space evenly between images */
+        }
+
+        .image-container img {
+            width: calc(25% - 10px); /* Adjust the width of each image (25% of the container width with a small gap) */
+            margin-right: 10px; /* Add a small gap between images */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Lab Assignment #2: LEDs and Push Buttons</h1>
+        <h3> September 27, 2023</h3>
+    </header>
+
+    <section id="description">
+        <h2>Description</h2>
+        <p>This lab has us building circuits that use buttons to control the LED bar graph for assignment 1 and the neopixel and rgb led for assignment 2</p>
+        <h3>Hardware components:</h3>
+        <ul>
+            <li>For Task 1:
+                <ul>
+                    <li>GPIO Extension Board x1</li>
+                    <li>ESP32-WROVER x1</li>
+                    <li>Breadboard x1</li>
+                    <li>LED bar graph x1</li>
+                    <li>Jumper wire x8</li>
+                    <li>push button x2</li>
+                    <li>Resistor x12 at 220 ohm</li>
+                </ul>
+            </li>
+            <li>For Task 2:
+                <ul>
+                    <li>GPIO Extension Board x1</li>
+                    <li>ESP32-WROVER x1</li>
+                    <li>Breadboard x1</li>
+                    <li>Jumper wire x9</li>
+                    <li>Resistor x3 at 220 ohms</li>
+                    <li>rgb LED x1</li>
+                    <li>neopixel x1</li>
+                    <li>Push button x1</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+    
+    <section id="Breadboard view">
+        <h2>Breadboard view</h2>
+        <h3>Task 1:</h3>
+        <!-- Placeholder for your Task 1 circuit diagram image -->
+        <img src="dia.png" alt="Task 1 Circuit Diagram">
+        <h3>Task 2:</h3>
+        <!-- Placeholder for your Task 2 circuit diagram image -->
+        <img src="breadboardq2.png" alt="Task 2 Circuit Diagram">
+    </section>
+
+    <section id="circuit-diagram">
+        <h2>Circuit Diagram</h2>
+        <h3>Task 1:</h3>
+        <!-- Placeholder for your Task 1 circuit diagram image -->
+        <img src="Picture1.png" alt="Task 1 Circuit Diagram">
+        <h3>Task 2:</h3>
+        <!-- Placeholder for your Task 2 circuit diagram image -->
+        <img src="circuitq2.png" alt="Task 2 Circuit Diagram">
+    </section>
+
+    <section id="source-code">
+        <h2>Source Code</h2>
+        <h3>Task 1:</h3>
+        <pre>
+            <code>
+from machine import Pin,PWM
+from pwm import myPWM
+import time
+
+mypwm = myPWM(13,2,0,4,5,18,19,21)
+chns=[0,1,2,3,4,5,6,7];
+dutys=[0,0,0,0,0,0,0,0,1023,512,256,128,64,32,16,8,0,0,0,0,0,0,0,0];
+delayTimes=50
+button1 = Pin(15, Pin.IN, Pin.PULL_UP)
+button2 = Pin(14, Pin.IN, Pin.PULL_UP)
+def showled():
+        for i in range(0,16):
+            for j in range(0,8):
+                mypwm.ledcWrite(chns[j],dutys[i+j])
+            time.sleep_ms(delayTimes)
+def showled2():           
+        for i in range(0,16):
+            for j in range(0,8):
+                mypwm.ledcWrite(chns[7-j],dutys[i+j])
+            time.sleep_ms(delayTimes)
+
+try:
+    while True:
+        if not button1.value():
+            showled2()
+            
+        if not button2.value():
+            showled()
+except:
+    mypwm.deinit()
+
+
+            </code>
+        </pre>
+        <h3>Task 2:</h3>
+        <pre>
+            <code>
+from machine import Pin,PWM
+import time
+
+import neopixel
+pin = Pin(5, Pin.OUT)
+np = neopixel.NeoPixel(pin, 8)
+
+pins=[15,2,0] #red(15) #green(2) #blue(0)
+button = Pin(14, Pin.IN, Pin.PULL_UP)
+
+pwm0=PWM(Pin(pins[0]),10000)
+pwm1=PWM(Pin(pins[1]),10000)
+pwm2=PWM(Pin(pins[2]),10000)
+
+def setColor(r,g,b):
+    pwm0.duty(1023-r)
+    pwm1.duty(1023-g)
+    pwm2.duty(1023-b)
+  
+color = [[255, 0, 0],[255, 50, 0],[255,255,0],[0,255,0],[0,0,255],[15, 0, 220],[25,0,200]]
+color2 = [[20, 0, 0], [20, 4, 0], [20, 20, 0], [0, 20, 0], [0, 0, 20], [6, 0, 10], [10, 0, 20]] 
+
+index = 0
+index2 = 0
+
+c=len(color)
+c2=len(color2)
+
+# Start Here
+try:
+    while True:
+        if button.value() == 0:
+            
+            r, g, b = color[index]
+            setColor(b, g, r)
+            time.sleep_ms(200)
+            index = (index + 1) % c
+
+            current_color = color2[index2]
+            for j in range(0, 8):
+                np[j] = current_color
+            np.write()
+            time.sleep_ms(50)
+            index2 = (index2 + 1) % c2
+            time.sleep_ms(500)
+            
+except:
+    pwm0.deinit()
+    pwm1.deinit()
+    pwm2.deinit()
+
+            </code>
+        </pre>
+    </section>
+
+    <section id="animated-gif">
+        <h2>Animated Gif</h2>
+        <h3>Task 1:</h3>
+        <!-- Placeholder for your Task 1 animated GIF -->
+        <img src="https://github.com/JoshBoels/JoshBoels.github.io/blob/main/NUM3.gif?raw=true" width="150" height="200">
+        <h3>Task 2:</h3>
+        <!-- Placeholder for your Task 2 animated GIF -->
+        <img src="https://github.com/JoshBoels/JoshBoels.github.io/blob/main/NUM4.gif?raw=true" alt="Task 2 Animated GIF" width="150" height="200">
+    </section>
+
+     <section id="tutorial-one">
+        <h2> Settings of all tasks</h2>
+        <div class="image-container">
+            <!-- First Image -->
+            <img src="IMG-8180.PNG" alt="Image 1" width="150" height="200">
+            
+            <!-- Second Image -->
+            <img src="IMG-8182.jpg" alt="Image 2" width="150" height="200">
+            
+            <!-- Third Image -->
+            <img src="IMG-8183.PNG" alt="Image 3" width="150" height="200">
+            
+            <!-- Fourth Image -->
+            <img src="IMG-8184.PNG" alt="Image 4" width="150" height="200">
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2023 Josh B</p>
+    </footer>
+</body>
+</html>

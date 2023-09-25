@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Project Website</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Add your CSS styles here */
+        .image-container {
+            display: flex; /* Use flexbox to create a row layout */
+            justify-content: space-between; /* Distribute space evenly between images */
+        }
+
+        .image-container img {
+            width: calc(25% - 10px); /* Adjust the width of each image (25% of the container width with a small gap) */
+            margin-right: 10px; /* Add a small gap between images */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Lab Assignment #1: LEDs and Push Buttons</h1>
+        <h3> September 20, 2023</h3>
+    </header>
+
+
+    <section id="tutorial-one">
+        <h2>Tutorial One</h2>
+        <!-- Placeholder for your GIF -->
+        <img src="https://github.com/JoshBoels/JoshBoels.github.io/blob/main/NUM1.gif?raw=true" alt="Tutorial Two GIF" width="150" height="200">
+
+    </section>
+       
+
+    </section>
+
+    <section id="tutorial-two">
+        <h2>Tutorial Two</h2>
+        <!-- Placeholder for your GIF -->
+        <img src="https://github.com/JoshBoels/JoshBoels.github.io/blob/main/NUM2.gif?raw=true" alt="Tutorial Two GIF" width="150" height="200">
+    </section>
+
+    <section id="description">
+        <h2>Description</h2>
+        <p>This lab introduces working with the ESP32 and has 2 separate tasks to complete. The first task is to build a circuit that has 3 lights that blink one after another, and the second task requires you to build a circuit that has two push buttons where one is designated to off and the other is designated to on.</p>
+        <h3>Hardware components:</h3>
+        <ul>
+            <li>For Task 1:
+                <ul>
+                    <li>GPIO Extension Board x1</li>
+                    <li>ESP32-WROVER x1</li>
+                    <li>Breadboard x1</li>
+                    <li>Jumper wire x5</li>
+                    <li>LED x3</li>
+                    <li>Resistor x3 at 1 k ohm</li>
+                </ul>
+            </li>
+            <li>For Task 2:
+                <ul>
+                    <li>GPIO Extension Board x1</li>
+                    <li>ESP32-WROVER x1</li>
+                    <li>Breadboard x1</li>
+                    <li>Jumper wire x5</li>
+                    <li>Resistor x3 (x2 at 10 k ohms, x1 at 220 ohms)</li>
+                    <li>LED x1</li>
+                    <li>Push button x2</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+    
+    <section id="Breadboard view">
+        <h2>Breadboard view</h2>
+        <h3>Task 1:</h3>
+        <!-- Placeholder for your Task 1 circuit diagram image -->
+        <img src="Picture1.png" alt="Task 1 Circuit Diagram">
+        <h3>Task 2:</h3>
+        <!-- Placeholder for your Task 2 circuit diagram image -->
+        <img src="Picture2.png" alt="Task 2 Circuit Diagram">
+    </section>
+
+    <section id="circuit-diagram">
+        <h2>Circuit Diagram</h2>
+        <h3>Task 1:</h3>
+        <!-- Placeholder for your Task 1 circuit diagram image -->
+        <img src="Picture4.png" alt="Task 1 Circuit Diagram">
+        <h3>Task 2:</h3>
+        <!-- Placeholder for your Task 2 circuit diagram image -->
+        <img src="Picture3.png" alt="Task 2 Circuit Diagram">
+    </section>
+
+    <section id="source-code">
+        <h2>Source Code</h2>
+        <h3>Task 1:</h3>
+        <pre>
+            <code>
+from time import sleep_ms
+from machine import Pin
+
+led=Pin(2,Pin.OUT)
+led2=Pin(15, Pin.OUT)
+led3=Pin(0, Pin.OUT)#create LED object from pin2,Set Pin2 to output
+try:
+    while True:
+        led.value(1)        #Set led turn on
+        sleep_ms(1000)
+        led.value(0) 
+        
+        led2.value(1)        #Set led turn off
+        sleep_ms(1000)
+        led2.value(0)
+        
+        led3.value(1)        #Set led turn off
+        sleep_ms(1000)
+        led3.value(0)
+        
+        
+except:
+    pass
+
+            </code>
+        </pre>
+        <h3>Task 2:</h3>
+        <pre>
+            <code>
+import time
+from machine import Pin
+
+led = Pin(2, Pin.OUT)
+button = Pin(12, Pin.IN, Pin.PULL_UP)
+button2 = Pin(13, Pin.IN, Pin.PULL_UP)
+
+ledVal = False
+
+while True:
+    if not button.value():
+        ledVal = False  # Button 1 is pressed, turn off the LED
+    if not button2.value():
+        ledVal = True   # Button 2 is pressed, turn on the LED
+    
+    # Set the LED state based on ledVal
+    if ledVal:
+        led.value(1)
+    else:
+        led.value(0)
+
+            </code>
+        </pre>
+    </section>
+
+    <section id="animated-gif">
+        <h2>Animated Gif</h2>
+        <h3>Task 1:</h3>
+        <!-- Placeholder for your Task 1 animated GIF -->
+        <img src="https://github.com/JoshBoels/JoshBoels.github.io/blob/main/NUM3.gif?raw=true" width="150" height="200">
+        <h3>Task 2:</h3>
+        <!-- Placeholder for your Task 2 animated GIF -->
+        <img src="https://github.com/JoshBoels/JoshBoels.github.io/blob/main/NUM4.gif?raw=true" alt="Task 2 Animated GIF" width="150" height="200">
+    </section>
+
+     <section id="tutorial-one">
+        <h2> Settings of all tasks</h2>
+        <div class="image-container">
+            <!-- First Image -->
+            <img src="IMG-8180.PNG" alt="Image 1" width="150" height="200">
+            
+            <!-- Second Image -->
+            <img src="IMG-8182.jpg" alt="Image 2" width="150" height="200">
+            
+            <!-- Third Image -->
+            <img src="IMG-8183.PNG" alt="Image 3" width="150" height="200">
+            
+            <!-- Fourth Image -->
+            <img src="IMG-8184.PNG" alt="Image 4" width="150" height="200">
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2023 Josh B</p>
+    </footer>
+</body>
+</html>
