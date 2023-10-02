@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Project Website</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Add your CSS styles here */
+        .image-container {
+            display: flex; /* Use flexbox to create a row layout */
+            justify-content: space-between; /* Distribute space evenly between images */
+        }
+
+        .image-container img {
+            width: calc(25% - 10px); /* Adjust the width of each image (25% of the container width with a small gap) */
+            margin-right: 10px; /* Add a small gap between images */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Lab Assignment #3: Buzzers, Serial Communication, and AD/DA Converters</h1>
+        <h3> October 4, 2023</h3>
+    </header>
+
+    <section id="description">
+        <h2>Description</h2>
+        <p>This assignment had us use buzzers to play different songs. It required the programmer to learn how to control the buzzer in a more meaninful way (opposed to just making random noise). Furthermore, for the second assignment we had to use serial communication using UARTs to connect our breadboards together in order to produce sound.  </p>
+        <h3>Hardware components:</h3>
+        <ul>
+            <li>For Task 1:
+                <ul>
+                    <li>GPIO Extension Board x1</li>
+                    <li>ESP32-WROVER x1</li>
+                    <li>Breadboard x1</li>
+                    <li>Buzzer x1</li>
+                    <li>Jumper wire x10</li>
+                    <li>push button x2</li>
+                    <li>rgb LED x1</li>
+                    <li>NPN Transistor x1</li>
+                    <li>Resistor x5 at 220 ohm, x1 at 1 k ohm </li>
+                </ul>
+            </li>
+            <li>For Task 2:
+                <ul>
+                    <li>GPIO Extension Board x2</li>
+                    <li>ESP32-WROVER x2</li>
+                    <li>Breadboard x2</li>
+                    <li>Jumper wire x16</li>
+                    <li>Resistor x8 at 220 ohms, x2 at 1 k ohm</li>
+                    <li>rgb LED x2</li>
+                    <li>Push button x2</li>
+                    <li>NPN Transistor x2</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+    
+    <section id="Breadboard view">
+        <h2>Breadboard view</h2>
+        <h3>Task 1:</h3>
+        <!-- Placeholder for your Task 1 circuit diagram image -->
+        <img src="a3_dia1.png" alt="Task 1 Circuit Diagram">
+        <h3>Task 2:</h3>
+        <!-- Placeholder for your Task 2 circuit diagram image -->
+        <img src="a3_dia2.png" alt="Task 2 Circuit Diagram">
+    </section>
+
+    <section id="circuit-diagram">
+        <h2>Circuit Diagram</h2>
+        <h3>Task 1:</h3>
+        <!-- Placeholder for your Task 1 circuit diagram image -->
+        <img src="a3_cd1.png" alt="Task 1 Circuit Diagram">
+        <h3>Task 2:</h3>
+        <!-- Placeholder for your Task 2 circuit diagram image -->
+        <img src="a3_cd2.png" alt="Task 2 Circuit Diagram">
+    </section>
+
+    <section id="source-code">
+        <h2>Source Code</h2>
+        <h3>Task 1:</h3>
+        <pre>
+            <code>
+from machine import Pin
+from machine import PWM
+from time import sleep_ms
+
+class GORILLACELL_BUZZER: 
+    def __init__(self, sig_pin):
+        self.pwm = PWM(Pin(sig_pin), duty=0)  # Use duty instead of duty_u16
+        
+    def play_blink(self, melodies, wait, duty=512):  # Adjust duty cycle to control volume
+        for note in melodies:
+            if note != 0:
+                self.pwm.freq(note)
+                led.value(1)
+                sleep_ms(wait)
+                led.value(0)
+            self.pwm.duty(duty)  # Adjust duty cycle here
+            sleep_ms(wait)
+            self.pwm.duty(0)
+    def play(self, melodies, wait, duty=512):  # Adjust duty cycle to control volume
+        for note in melodies:
+            if note != 0:
+                self.pwm.freq(note)
+
+                sleep_ms(wait)
+                
+            self.pwm.duty(duty)  # Adjust duty cycle here
+            sleep_ms(wait)
+            self.pwm.duty(0)
+        
+
+C6  = 1047 # C
+D6  = 1175 # D
+E6  = 1319 # E
+F6  = 1397 # F
+G6  = 1568 # G
+A6  = 1760 # A
+B6  = 1976 # B
+# Melody lists
+row_your_boat = [
+    C6,0, 0, C6, 0,0,C6, D6, E6, 0,0, E6,
+    D6, E6, F6,  G6,0,0,0, C6, C6, C6,
+    G6, G6,G6, E6, E6, E6, C6, C6,
+    C6, G6, F6, E6, D6, C6, 0, 0
+]
+mary_mary=[B6,A6,G6,A6,B6,B6,B6,0,0,A6,A6,A6,0,B6,B6,B6,0,B6,A6,G6,A6,B6,B6,B6,0,B6,A6,A6,B6,A6,G6]
+
+
+# Configure the buzzer
+buzzer = GORILLACELL_BUZZER(13)  # Use the correct pin (Pin 13)
+led=Pin(2,Pin.OUT)
+# Check if the button is pressed and play the melody
+button = Pin(12, Pin.IN, Pin.PULL_UP)
+button2 = Pin(14, Pin.IN, Pin.PULL_UP)
+# Configure the button
+while True:
+    if not button.value():  # Button is pressed (logic is inverted due to pull-up resistor)
+        print("Button pressed, playing melody...")
+        
+        buzzer.play_blink(row_your_boat, 150)
+        sleep_ms(200)
+
+    if not button2.value():  # Button is pressed (logic is inverted due to pull-up resistor)
+        print("Button pressed, playing melody...")
+        led.value(1)
+        buzzer.play(mary_mary, 150)
+        led.value(0)
+        sleep_ms(200)
+
+
+
+            </code>
+        </pre>
+        <h3>Task 2:</h3>
+        <pre>
+            <code>
+from machine import UART
+from machine import PWM
+from machine import Pin
+import time
+
+
+uart = UART(2, baudrate=115200, bits=8, parity=None, rx=18, tx=19, rts=-1, cts=-1, txbuf=256, rxbuf=256, timeout=0, timeout_char=1)
+button=Pin(14,Pin.IN,Pin.PULL_UP)
+LED = Pin(2, Pin.OUT)
+buzzer = Pin(13, Pin.OUT)
+
+def play_sound(pin, notes, delays, duty):
+    pwm = PWM(pin)
+    for note in notes:
+        if note != 0:
+            pwm.freq(note)
+            LED.value(1)
+            time.sleep(delays)
+            LED.value(0)
+        pwm.duty(duty)
+        time.sleep(delays)
+        pwm.duty(0)
+    pwm.deinit()
+    
+C = 1047
+D = 1175
+E = 1319
+F = 1397
+G = 1568
+A = 1760
+B = 1976
+sounds = [C, D, E, F, G, A, B, A, G, F, E, D, C]
+
+while True:
+    
+    if not button.value():
+        uart.write('hello')
+    if uart.any():
+        data=uart.read()
+        if data: 
+            print(data)
+            play_sound(buzzer, sounds, 0.1, 512)
+
+
+            </code>
+        </pre>
+    </section>
+
+    <section id="animated-gif">
+        <h2>Video</h2>
+        <h3>Task 1:</h3>
+        <!-- Placeholder for your Task 1 animated GIF -->
+        <img src="a3_vid1.MP4" width="150" height="200">
+        <h3>Task 2:</h3>
+        <!-- Placeholder for your Task 2 animated GIF -->
+        <img src="A3_vid2.MP4" width="150" height="200">
+    </section>
+
+     <section id="tutorial-one">
+        <h2> Settings for task 1</h2>
+            <!-- First Image -->
+        <img src="a3_bbv1.PNG" alt="Image 1" width="150" height="200">
+           
+        <h2> Settings for task 2</h2>
+            <!-- Second Image -->
+        <img src="a3_bbv2.PNG" alt="Image 2" width="150" height="200">
+            
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2023 Josh B</p>
+    </footer>
+</body>
+</html>
